@@ -11,6 +11,7 @@ export const createJobController = async (req: Request, res: Response) => {
       location: req.body.location,
       salary: req.body.salary,
       description: req.body.description,
+      cv: req.file?.buffer
     });
 
     const job = await JobServices.createJob(newJob);
@@ -79,5 +80,27 @@ export const deleteJobController = async (req: Request, res: Response) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Failed to delete job" });
+  }
+};
+
+export const getJobCvController = async (req: Request, res: Response) => {
+  try {
+    const jobId = req.params.jobId; // Assuming you pass the job ID in the URL
+
+    const cvBuffer = await JobServices.getJobCv(jobId);
+
+    if (!cvBuffer) {
+      return res.status(404).json({ error: 'CV not found for this job' });
+    }
+
+    // Set response headers to specify that you're sending a PDF file
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename="${jobId}_cv.pdf"`);
+
+    // Send the CV buffer as the response body
+    res.send(cvBuffer);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Failed to fetch CV' });
   }
 };

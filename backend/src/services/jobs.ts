@@ -22,4 +22,15 @@ const deleteJob = async (id: string): Promise<JobDocument | null> => {
   return Job.findByIdAndDelete(id);
 }
 
-export default { createJob, getJobs, getJobById, updateJob, deleteJob };
+const getJobCv = async (id: string): Promise<Buffer | null> => {
+    const job = await Job.findById(id);
+  
+    if (!job || !job.cv) {
+      return null;
+    }
+  
+    // Assuming the "cv" field in your model stores the CV data as a Buffer
+    return job.cv;
+  }
+
+export default { createJob, getJobs, getJobById, updateJob, deleteJob, getJobCv };

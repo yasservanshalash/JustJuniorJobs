@@ -8,6 +8,7 @@ export type JobDocument = Document & {
   location: string;
   salary: number;
   description: string;
+  cv: Buffer
 };
 
 const JobSchema = new Schema({
@@ -30,6 +31,9 @@ const JobSchema = new Schema({
   description: {
     type: String,
     required: true,
+  },
+  cv: {
+    type: Buffer, // Store the CV file as binary data
   },
 });
 

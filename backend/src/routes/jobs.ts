@@ -6,6 +6,7 @@ import {
   getJobByIdController,
   updateJobController,
   deleteJobController,
+  getJobCvController
 } from "../controllers/jobs";
 
 const router = Router();
@@ -24,5 +25,7 @@ router.put("/:id", updateJobController);
 
 // Delete a job posting by ID
 router.delete("/:id", deleteJobController);
+
+router.get('/:jobId/cv', getJobCvController);
 
 export default router;
